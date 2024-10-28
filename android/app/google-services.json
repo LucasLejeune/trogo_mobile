@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:989278047275:android:8114c128031b67b3d3ae6e",
+        "android_client_info": {
+          "package_name": "com.example.trogo_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtFUtvm7YSu6mk9ksv4q168MLlFvy_gWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:989278047275:android:46272432c06a06cdd3ae6e",
         "android_client_info": {
           "package_name": "com.trogo"
