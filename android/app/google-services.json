@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "989278047275",
+    "project_id": "trogo-dcdf5",
+    "storage_bucket": "trogo-dcdf5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:989278047275:android:46272432c06a06cdd3ae6e",
+        "android_client_info": {
+          "package_name": "com.trogo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtFUtvm7YSu6mk9ksv4q168MLlFvy_gWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
