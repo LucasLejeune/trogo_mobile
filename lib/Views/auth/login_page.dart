@@ -41,6 +41,15 @@ class LoginPage extends ConsumerWidget {
               },
               child: const Text('Se connecter'),
             ),
+            ElevatedButton(
+                onPressed: () async {
+                User? user = await authController.register(email, password);
+                if (user != null) {
+                  Navigator.pushReplacementNamed(context, '/home');
+                }
+              },
+              child: const Text("S'enregistrer"),
+            ),
           ],
         ),
       ),
