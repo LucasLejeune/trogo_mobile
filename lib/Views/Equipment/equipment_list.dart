@@ -1,78 +1,62 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:trogo_mobile/Logics/Equipment/equipment_service.dart';
+import 'package:trogo_mobile/Logics/Equipment/selected_equipment_notifier.dart';
+import 'package:trogo_mobile/model/equipment.dart';
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:trogo_mobile/model/equipment.dart';
-
-class EquipmentListScreen extends StatefulWidget {
+class EquipmentListScreen extends HookConsumerWidget {
   @override
-  _EquipmentListScreenState createState() => _EquipmentListScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final equipmentAsyncValue = ref.watch(equipmentProvider);
 
-class _EquipmentListScreenState extends State<EquipmentListScreen> {
-  List<Equipment> _items = [];
-  List<bool> _selectedItems = [];
-
-  Future<List<Equipment>> fetchItems() async {
-    List<Equipment> items = [];
-    QuerySnapshot equipmentSnapshot =
-        await FirebaseFirestore.instance.collection('Equipments').get();
-    DocumentReference userDoc = FirebaseFirestore.instance
-        .collection('Users')
-        .doc('jFOaMexbbC8Y32NcK92I');
-    //TODO: remplacer par l'utilisateur connecté.
-    //TODO: utiliser un hook
-    DocumentSnapshot documentSnapshot = await userDoc.get();
-    Map<String, dynamic> userData =
-        documentSnapshot.data() as Map<String, dynamic>;
-    List<dynamic> userEquipments = userData['Equipments'];
-    if (_selectedItems.isEmpty) {
-      _selectedItems = List<bool>.filled(equipmentSnapshot.docs.length, false);
-    }
-    equipmentSnapshot.docs.asMap().forEach((index, doc) {
-      String name = doc['name'];
-      if (userEquipments.contains(name)) {
-        _selectedItems[index] = true;
-      }
-      items.add(Equipment(name: name));
-    });
-    return items;
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Gérer l'équipement"),
       ),
-      body: FutureBuilder<List<Equipment>>(
-        future: fetchItems(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No items found.'));
-          } else {
-            _items = snapshot.data!;
-            return ListView.builder(
-              itemCount: _items.length,
+      body: equipmentAsyncValue.when(
+        data: (items) {
+          final userEquipments = useState<List<String>>([]);
+
+          final selectedItems = ref.watch(selectedItemsProvider(items.length));
+
+          final equipmentServiceProvider =
+              Provider((ref) => EquipmentService());
+
+          useEffect(() {
+            userEquipments.value = [];
+            return null;
+          }, []);
+
+          return Column(children: [
+            Expanded(
+                child: ListView.builder(
+              itemCount: items.length,
               itemBuilder: (context, index) {
                 return CheckboxListTile(
-                  title: Text(_items[index].name),
-                  value: _selectedItems[index],
+                  title: Text(items[index].name),
+                  value: selectedItems[index],
                   onChanged: (bool? value) {
-                    setState(() {
-                      _selectedItems[index] = value ?? true;
-                    });
+                    ref
+                        .read(selectedItemsProvider(items.length).notifier)
+                        .toggleSelection(index, items[index].name);
                   },
                 );
               },
-            );
-          }
+            )),
+            ElevatedButton(
+              onPressed: () async {
+                await ref
+                    .read(equipmentServiceProvider)
+                    .addEquipment(items, selectedItems);
+              },
+              child: Text("Mettre à jour l'équipement"),
+            )
+          ]);
         },
+        loading: () => Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Center(child: Text('Error: $error')),
       ),
     );
   }
