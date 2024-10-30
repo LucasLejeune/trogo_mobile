@@ -33,7 +33,13 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.pushNamed(context, '/workouts');
             },
             child: Text('Voir tous les entrainements'),
-          )
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/login');
+            },
+            child: Text("Se connecter"),
+          ),
         ],
       )),
     );
