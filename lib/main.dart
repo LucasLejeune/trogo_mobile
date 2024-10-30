@@ -3,8 +3,8 @@ import 'package:riverpod/riverpod.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:trogo_mobile/Views/Equipment/equipment_list.dart';
+import 'package:trogo_mobile/Views/Workout/all_workout_list.dart';
 import 'Views/home.dart';
-import 'Views/Equipment/add.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
           '/': (context) => const MyHomePage(
                 title: 'Home',
               ),
-          '/equipment': (context) => EquipmentListScreen()
+          '/equipment': (context) => EquipmentListScreen(),
+          '/workouts': (context) => AllWorkoutsScreen(),
         },
       ),
     );

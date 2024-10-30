@@ -19,13 +19,23 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/equipment');
-          },
-          child: Text('Go to Second Screen'),
-        ),
-      ),
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/equipment');
+            },
+            child: Text('Gérer mon équipement'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/workouts');
+            },
+            child: Text('Voir tous les entrainements'),
+          )
+        ],
+      )),
     );
   }
 }
