@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:trogo_mobile/Logics/Workout/workout_service.dart';
 import 'package:trogo_mobile/Views/Workout/workout_screen.dart';
 import 'package:trogo_mobile/model/exercise.dart';
 import 'package:trogo_mobile/model/workout.dart';
 
 class AllWorkoutsScreen extends StatelessWidget {
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-      fetchWorkouts() async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await FirebaseFirestore.instance.collection('Workouts').get();
-    return querySnapshot.docs;
-  }
+  final WorkoutService _workoutService = WorkoutService();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +16,7 @@ class AllWorkoutsScreen extends StatelessWidget {
         title: Text('Entrainements'),
       ),
       body: FutureBuilder<List<QueryDocumentSnapshot>>(
-        future: fetchWorkouts(),
+        future: _workoutService.fetchWorkouts(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
