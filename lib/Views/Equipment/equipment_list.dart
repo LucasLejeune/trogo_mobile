@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:trogo_mobile/Logics/Equipment/equipment_service.dart';
 import 'package:trogo_mobile/Logics/Equipment/selected_equipment_notifier.dart';
 import 'package:trogo_mobile/model/equipment.dart';
-import 'dart:developer';
 
 class EquipmentListScreen extends HookConsumerWidget {
   @override

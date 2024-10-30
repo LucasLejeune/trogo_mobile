@@ -5,6 +5,12 @@ class Equipment {
   final String name;
 
   Equipment({required this.name});
+
+  factory Equipment.fromMap(Map<String, dynamic> data) {
+    return Equipment(
+      name: data['name'] ?? '',
+    );
+  }
 }
 
 final equipmentProvider = FutureProvider<List<Equipment>>((ref) async {
