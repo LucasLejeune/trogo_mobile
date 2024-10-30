@@ -43,7 +43,7 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Workout Details'),
+        title: Text("Détails de l'entrainement"),
         actions: [
           IconButton(
             icon: Icon(Icons.refresh),
@@ -98,6 +98,7 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
                                     FontAwesomeIcons.stopwatch,
                                     size: 15,
                                   ),
+                                  SizedBox(width: 2.0),
                                   Text('${workout.duration} minutes')
                                 ],
                               )
@@ -134,11 +135,11 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
+                                              SizedBox(width: 2.0),
                                               FaIcon(
                                                 exercise.getDifficultyIcon(),
                                                 size: 15,
                                               ),
-                                              SizedBox(width: 2.0),
                                             ],
                                           );
                                         },
@@ -180,7 +181,7 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
                                       Row(
                                         children: [
                                           FaIcon(
-                                            FontAwesomeIcons.person,
+                                            FontAwesomeIcons.handFist,
                                             size: 15,
                                           ),
                                           SizedBox(width: 2.0),
