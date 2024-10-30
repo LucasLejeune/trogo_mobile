@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -11,6 +12,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  User? currentUser = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,12 +37,17 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             child: Text('Voir tous les entrainements'),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/login');
-            },
-            child: Text("Se connecter"),
-          ),
+          Builder(builder: (context) {
+            if (currentUser == null) {
+              return ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/login');
+                },
+                child: Text("Se connecter"),
+              );
+            }
+            return SizedBox.shrink();
+          }),
         ],
       )),
     );

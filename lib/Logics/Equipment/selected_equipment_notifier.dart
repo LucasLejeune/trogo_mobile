@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SelectedEquipmentsNotifier extends StateNotifier<List<bool>> {
   List<String> userEquipments = [];
+  User? currentUser = FirebaseAuth.instance.currentUser;
 
   SelectedEquipmentsNotifier(int itemCount)
       : super(List.filled(itemCount, false)) {
@@ -12,38 +14,34 @@ class SelectedEquipmentsNotifier extends StateNotifier<List<bool>> {
   }
 
   Future<void> fetchEquipments() async {
-    try {
-      // Fetch all equipment names
-      QuerySnapshot querySnapshot =
-          await FirebaseFirestore.instance.collection('Equipments').get();
-      List<String> equipmentNames =
-          querySnapshot.docs.map((doc) => doc['name'] as String).toList();
-      // Set the initial state with the count of equipment
-      state = List.filled(equipmentNames.length, false);
+    if (currentUser != null) {
+      try {
+        QuerySnapshot querySnapshot =
+            await FirebaseFirestore.instance.collection('Equipments').get();
+        List<String> equipmentNames =
+            querySnapshot.docs.map((doc) => doc['name'] as String).toList();
+        state = List.filled(equipmentNames.length, false);
 
-      // Fetch user document
-      DocumentReference userDoc = FirebaseFirestore.instance
-          .collection('Users')
-          .doc('jFOaMexbbC8Y32NcK92I');
+        DocumentReference userDoc = FirebaseFirestore.instance
+            .collection('Users')
+            .doc(currentUser?.uid);
 
-      DocumentSnapshot documentSnapshot = await userDoc.get();
-      Map<String, dynamic> userData =
-          documentSnapshot.data() as Map<String, dynamic>;
+        DocumentSnapshot documentSnapshot = await userDoc.get();
+        Map<String, dynamic> userData =
+            documentSnapshot.data() as Map<String, dynamic>;
 
-      // Initialize userEquipments
-      userEquipments = List<String>.from(userData['Equipments'] ?? []);
+        userEquipments = List<String>.from(userData['Equipments'] ?? []);
 
-      // Update the state based on userEquipments
-      for (int i = 0; i < equipmentNames.length; i++) {
-        if (userEquipments.contains(equipmentNames[i])) {
-          state[i] = true; // Mark as selected
+        for (int i = 0; i < equipmentNames.length; i++) {
+          if (userEquipments.contains(equipmentNames[i])) {
+            state[i] = true;
+          }
         }
-      }
 
-      // Notify listeners of the state change
-      state = List.from(state); // Trigger rebuild
-    } catch (e) {
-      print('Error fetching equipments: $e');
+        state = List.from(state);
+      } catch (e) {
+        print('Error fetching equipments: $e');
+      }
     }
   }
 
