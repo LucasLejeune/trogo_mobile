@@ -11,6 +11,32 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+      switch (index) {
+      case 0:
+        setState(() {
+          _selectedIndex = 0;
+        });
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/login');
+        break;
+      case 2: 
+        Navigator.pushNamed(context, '/equipment');
+        break;
+      default:
+        setState(() {
+          _selectedIndex = 0;
+        });
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +68,24 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       )),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Accueil',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.library_books),
+            label: 'Entrainement',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Connexion',
+          ),
+        ],
+      )
     );
   }
 }
