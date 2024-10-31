@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:trogo_mobile/providers/auth_controller.dart';
+import 'navbar.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -30,38 +31,47 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Column(
         children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/equipment');
-            },
-            child: Text('Gérer mon équipement'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/workouts');
-            },
-            child: Text('Voir tous les entrainements'),
-          ),
-          Builder(builder: (context) {
-            if (currentUser == null) {
-              return ElevatedButton(
+          Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/login');
+                  Navigator.pushNamed(context, '/equipment');
                 },
-                child: Text("Se connecter"),
-              );
-            }
-            return ElevatedButton(
-              onPressed: _logout,
-              child: Text('Se déconnecter'),
-            );
-          }),
+                child: Text('Gérer mon équipement'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/workouts');
+                },
+                child: Text('Voir tous les entrainements'),
+              ),
+              Builder(builder: (context) {
+                if (currentUser == null) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/login');
+                    },
+                    child: Text("Se connecter"),
+                  );
+                }
+                return ElevatedButton(
+                  onPressed: _logout,
+                  child: Text('Se déconnecter'),
+                );
+              }),
+            ],
+          )),
+          Navbar(
+              currentIndex: 0,
+              child: Center(
+                child: Text('Bienvenue sur la page d\'Accueil'),
+              ))
         ],
-      )),
+      ),
     );
   }
 }
