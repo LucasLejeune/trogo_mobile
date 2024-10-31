@@ -15,7 +15,7 @@ final ThemeData theme = ThemeData(
   brightness: Brightness.light,
   textTheme: TextTheme(
     bodyLarge: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
-    bodyMedium: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+    bodyMedium: TextStyle(fontSize: 16.0),
     displayLarge: TextStyle(
         fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.black),
   ),
