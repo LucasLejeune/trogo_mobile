@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:trogo_mobile/providers/auth_controller.dart';
-import 'navbar.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
+  const MyHomePage(
+      {super.key, required this.title, required this.currentIndex});
+  final int currentIndex;
   final String title;
 
   @override
@@ -24,6 +24,20 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _onItemTapped(int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/home');
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/equipment');
+        break;
+      case 2:
+        Navigator.pushNamed(context, '/login');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,45 +45,54 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Column(
+      body: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/equipment');
+            },
+            child: Text('Gérer mon équipement'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/workouts');
+            },
+            child: Text('Voir tous les entrainements'),
+          ),
+          Builder(builder: (context) {
+            if (currentUser == null) {
+              return ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/equipment');
+                  Navigator.pushNamed(context, '/login');
                 },
-                child: Text('Gérer mon équipement'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/workouts');
-                },
-                child: Text('Voir tous les entrainements'),
-              ),
-              Builder(builder: (context) {
-                if (currentUser == null) {
-                  return ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/login');
-                    },
-                    child: Text("Se connecter"),
-                  );
-                }
-                return ElevatedButton(
-                  onPressed: _logout,
-                  child: Text('Se déconnecter'),
-                );
-              }),
-            ],
-          )),
-          Navbar(
-              currentIndex: 0,
-              child: Center(
-                child: Text('Bienvenue sur la page d\'Accueil'),
-              ))
+                child: Text("Se connecter"),
+              );
+            }
+            return ElevatedButton(
+              onPressed: _logout,
+              child: Text('Se déconnecter'),
+            );
+          }),
+        ],
+      )),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: widget.currentIndex,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Accueil',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bookmark),
+            label: 'Equipement',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Authentification',
+          ),
         ],
       ),
     );
