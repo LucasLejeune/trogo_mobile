@@ -20,57 +20,67 @@ class RegisterPage extends ConsumerWidget {
       appBar: AppBar(title: Text("Créer un compte")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            TextField(
-              controller: passwordController,
-              decoration: InputDecoration(labelText: 'Mot de passe'),
-              obscureText: true,
-            ),
-            TextField(
-              controller: repasswordController,
-              decoration: InputDecoration(labelText: 'Confirmer le Mot de passe'),
-              obscureText: true,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                String email = emailController.text.trim();
-                String password = passwordController.text.trim();
-                String secondpassword = repasswordController.text.trim();
+        child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(labelText: 'Email'),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                TextField(
+                  controller: passwordController,
+                  decoration: InputDecoration(labelText: 'Mot de passe'),
+                  obscureText: true,
+                ),
+                TextField(
+                  controller: repasswordController,
+                  decoration:
+                      InputDecoration(labelText: 'Confirmer le Mot de passe'),
+                  obscureText: true,
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () async {
+                    String email = emailController.text.trim();
+                    String password = passwordController.text.trim();
+                    String secondpassword = repasswordController.text.trim();
 
-                User? user = await authController.register(email, password);
+                    User? user = await authController.register(email, password);
 
-                if (user != null) {
-                  if(secondpassword != password) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Les mots de passe doivent être identiques.")),
-                    ); 
-                  } else {
-                    Navigator.pushReplacementNamed(context, '/');
-                  }
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Échec de l'inscription. Veuillez réessayer.")),
-                  );
-                }
-              },
-              child: Text("S'inscrire"),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-              Navigator.pushReplacementNamed(context, '/login');
-              },
-              child: const Text("Se connecter"),
-            ),
-          ],
-        ),
+                    if (user != null) {
+                      if (secondpassword != password) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text(
+                                  "Les mots de passe doivent être identiques.")),
+                        );
+                      } else {
+                        Navigator.pushReplacementNamed(context, '/');
+                      }
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text(
+                                "Échec de l'inscription. Veuillez réessayer.")),
+                      );
+                    }
+                  },
+                  child: Text("S'inscrire"),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    Navigator.pushReplacementNamed(context, '/login');
+                  },
+                  child: const Text("Se connecter"),
+                ),
+              ],
+            )),
       ),
     );
   }

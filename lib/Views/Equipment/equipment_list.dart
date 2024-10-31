@@ -28,7 +28,7 @@ class EquipmentListScreen extends HookConsumerWidget {
             return null;
           }, []);
 
-          return Column(children: [
+          return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Expanded(
                 child: ListView.builder(
               itemCount: items.length,
@@ -51,7 +51,10 @@ class EquipmentListScreen extends HookConsumerWidget {
                     .addEquipment(items, selectedItems);
               },
               child: Text("Mettre à jour l'équipement"),
-            )
+            ),
+            SizedBox(
+              height: 10,
+            ),
           ]);
         },
         loading: () => Center(child: CircularProgressIndicator()),
