@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:trogo_mobile/Logics/Workout/workout_service.dart';
 import 'package:trogo_mobile/Views/Workout/workout_screen.dart';
 import 'package:trogo_mobile/model/exercise.dart';
-import 'package:trogo_mobile/model/workout.dart';
 
 class AllWorkoutsScreen extends StatelessWidget {
   final WorkoutService _workoutService = WorkoutService();

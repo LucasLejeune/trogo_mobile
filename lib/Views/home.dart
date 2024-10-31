@@ -19,7 +19,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _logout() async {
     await _authController.logOut();
     setState(() {
-      currentUser = null; // Update the current user state
+      currentUser = null;
     });
   }
 

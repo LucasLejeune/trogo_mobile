@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:trogo_mobile/Views/Equipment/equipment_list.dart';
@@ -10,9 +9,9 @@ import 'Views/home.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter is initialized
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform, // Initialize Firebase
+    options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
 }
