@@ -1,8 +1,10 @@
 // ignore_for_file: avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'auth_provider.dart';
 
 final authControllerProvider = Provider((ref) {
@@ -40,7 +42,15 @@ class AuthController {
       );
       return userCredential.user;
     } catch (e) {
-      print(e);
+      Fluttertoast.showToast(
+          msg: e.toString(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.black,
+          textColor: Colors.red,
+          fontSize: 16.0,
+          webBgColor: "black");
       return null;
     }
   }

@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:trogo_mobile/model/equipment.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class EquipmentService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -30,10 +32,25 @@ class EquipmentService {
             });
           }
         });
-
-        print('User\'s Equipments array updated successfully');
+        Fluttertoast.showToast(
+            msg: "Equipement mis à jour",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 16.0,
+            webBgColor: "black");
       } catch (e) {
-        print('Error updating equipment: $e');
+        Fluttertoast.showToast(
+            msg: "Une erreur est survenue",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black,
+            textColor: Colors.red,
+            fontSize: 16.0,
+            webBgColor: "black");
       }
     }
   }
