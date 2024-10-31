@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -19,28 +20,31 @@ final equipmentProvider = FutureProvider<List<Equipment>>((ref) async {
 
 Future<List<Equipment>> fetchItems() async {
   List<Equipment> items = [];
+  User? currentUser = FirebaseAuth.instance.currentUser;
 
-  try {
-    QuerySnapshot equipmentSnapshot =
-        await FirebaseFirestore.instance.collection('Equipments').get();
+  if (currentUser != null) {
+    try {
+      QuerySnapshot equipmentSnapshot =
+          await FirebaseFirestore.instance.collection('Equipments').get();
 
-    DocumentReference userDoc = FirebaseFirestore.instance
-        .collection('Users')
-        .doc('jFOaMexbbC8Y32NcK92I');
+      DocumentReference userDoc =
+          FirebaseFirestore.instance.collection('Users').doc(currentUser.uid);
 
-    DocumentSnapshot documentSnapshot = await userDoc.get();
-    Map<String, dynamic> userData =
-        documentSnapshot.data() as Map<String, dynamic>;
+      DocumentSnapshot documentSnapshot = await userDoc.get();
+      Map<String, dynamic> userData =
+          documentSnapshot.data() as Map<String, dynamic>;
 
-    List<dynamic> userEquipments = userData['Equipments'] ?? [];
+      List<dynamic> userEquipments = userData['Equipments'] ?? [];
 
-    for (var doc in equipmentSnapshot.docs) {
-      items.add(Equipment(name: doc['name']));
+      for (var doc in equipmentSnapshot.docs) {
+        items.add(Equipment(name: doc['name']));
+      }
+    } catch (e) {
+      print('Error fetching items: $e');
+      throw Exception('Failed to fetch items');
     }
-  } catch (e) {
-    print('Error fetching items: $e');
-    throw Exception('Failed to fetch items');
-  }
 
-  return items;
+    return items;
+  }
+  return [];
 }
