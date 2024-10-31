@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => const MyHomePage(
                 title: 'Home',
+                currentIndex: 0,
               ),
           '/equipment': (context) => EquipmentListScreen(),
           '/workouts': (context) => AllWorkoutsScreen(),

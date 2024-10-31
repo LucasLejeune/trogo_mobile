@@ -25,16 +25,27 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        Navigator.pushNamed(context, '/home');
-        break;
-      case 1:
-        Navigator.pushNamed(context, '/equipment');
-        break;
-      case 2:
-        Navigator.pushNamed(context, '/login');
-        break;
+    if (currentUser == null) {
+      switch (index) {
+        case 0:
+          Navigator.pushNamed(context, '/home');
+          break;
+        case 1:
+          Navigator.pushNamed(context, '/login');
+          break;
+      }
+    } else {
+      switch (index) {
+        case 0:
+          Navigator.pushNamed(context, '/home');
+          break;
+        case 1:
+          Navigator.pushNamed(context, '/equipment');
+          break;
+        case 2:
+          _logout();
+          break;
+      }
     }
   }
 
@@ -49,52 +60,61 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/equipment');
-            },
-            child: Text('Gérer mon équipement'),
+          Text(
+            "Bienvenue sur Trogo",
+            style: TextStyle(
+              fontSize: 24.0,
+            ),
+          ),
+          SizedBox(
+            height: 10,
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(context, '/workouts');
             },
-            child: Text('Voir tous les entrainements'),
+            child: Builder(builder: (context) {
+              if (currentUser == null) {
+                return Text("Voir tous les entrainements");
+              }
+              return Text("Voir les entrainements en lien avec mon équipement");
+            }),
           ),
-          Builder(builder: (context) {
-            if (currentUser == null) {
-              return ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/login');
-                },
-                child: Text("Se connecter"),
-              );
-            }
-            return ElevatedButton(
-              onPressed: _logout,
-              child: Text('Se déconnecter'),
-            );
-          }),
         ],
       )),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: widget.currentIndex,
-        onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Accueil',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
-            label: 'Equipement',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Authentification',
-          ),
-        ],
-      ),
+      bottomNavigationBar: currentUser == null
+          ? BottomNavigationBar(
+              currentIndex: widget.currentIndex,
+              onTap: _onItemTapped,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Accueil',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Authentification',
+                ),
+              ],
+            )
+          : BottomNavigationBar(
+              currentIndex: widget.currentIndex,
+              onTap: _onItemTapped,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Accueil',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.bookmark),
+                  label: 'Equipement',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Déconnexion',
+                ),
+              ],
+            ),
     );
   }
 }
